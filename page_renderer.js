@@ -10,9 +10,6 @@ PageRenderer.prototype = {
 	},
 	boolean: function (element, attribute) {
 		return !!((this.booleans[element.tag] || {})[attribute]);
-		if (element.tag == "style" && attribute == "scoped") return true;
-		
-		return false;
 	},
 	blanks: { // complete list
 		area: true, 
