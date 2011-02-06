@@ -103,9 +103,7 @@ PageRenderer.prototype = {
 	},
 	render: function(page) {
 		page.tag = 'html';
-		var lines = [this.process(page, 0)];
-		lines[0] = ["<!DOCTYPE html>\n", lines[0]].join("");
-		var result = lines.join(this.minified ? "" : "\n");
+		var result = ["<!DOCTYPE html>\n", this.process(page, 0)].join("");
 		return result;
 	}
 };
