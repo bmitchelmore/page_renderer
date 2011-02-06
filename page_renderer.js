@@ -3,15 +3,94 @@ var PageRenderer = function(minified) {
 };
 
 PageRenderer.prototype = {
-	booleans: { // incomplete list, obviously
+	booleans: { // complete list, as far as I know
 		'style': {
 			'scoped': true
+		},
+		'script': {
+			'async': true,
+			'defer': true
+		},
+		'ol': {
+			'reversed': true
+		},
+		'time': {
+			'pubdate': true
+		},
+		'img': {
+			'ismap': true
+		},
+		'iframe': {
+			'seamless': true
+		},
+		'video': {
+			'controls': true,
+			'loop': true,
+			'autoplay': true
+		},
+		'audio': {
+			'controls': true,
+			'loop': true,
+			'autoplay': true
+		},
+		'track': {
+			'default': true
+		},
+		'form': {
+			'novalidate': true
+		},
+		'fieldset': {
+			'disabled': true
+		},
+		'input': {
+			'autofocus': true,
+			'checked': true,
+			'disabled': true,
+			'formnovalidate': true,
+			'multiple': true,
+			'readonly': true,
+			'required': true
+		},
+		'button': {
+			'autofocus': true,
+			'disabled': true,
+			'formnovalidate': true
+		},
+		'select': {
+			'autofocus': true,
+			'disabled': true,
+			'multiple': true,
+			'required': true
+		},
+		'optgroup': {
+			'disabled': true
+		},
+		'option': {
+			'disabled': true,
+			'selected': true
+		},
+		'textarea': {
+			'autofocus': true,
+			'disabled': true,
+			'readonly': true,
+			'required': true
+		},
+		'keygen': {
+			'autofocus': true,
+			'disabled': true
+		},
+		'details': {
+			'open': true
+		},
+		'command': {
+			'checked': true,
+			'disabled': true
 		}
 	},
 	boolean: function (element, attribute) {
 		return !!((this.booleans[element.tag] || {})[attribute]);
 	},
-	blanks: { // complete list
+	blanks: { // complete list based on <http://dev.w3.org/html5/markup/syntax.html#syntax-elements>
 		area: true, 
 		base: true,
 		br: true, 
@@ -32,10 +111,26 @@ PageRenderer.prototype = {
 	blank: function (element) {
 		return this.blanks[element.tag];
 	},
-	defaults: { // incomplete list, obviously
+	defaults: { // incomplete list, as far I know
 		'style': {
 			'type': 'text/css',
 			'media': 'all'
+		},
+		'bdi': {
+			'dir': 'auto'
+		},
+		'input': {
+			'type': 'text',
+			'autocomplete': 'default'
+		},
+		'button': {
+			'type': 'submit'
+		},
+		'textarea': {
+			'wrap': 'soft'
+		},
+		'menu': {
+			'type': 'list'
 		}
 	},
 	defaulted: function(element, attribute, value) {
@@ -111,3 +206,4 @@ PageRenderer.prototype = {
 exports.render = function(page, minified) {
 	return new PageRenderer(minified).render(page);
 };
+exports.Renderer = PageRenderer;
