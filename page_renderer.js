@@ -1,3 +1,5 @@
+var parser = require('./lib/htmlparser');
+
 var PageRenderer = function(minified) {
 	this.minified = minified;
 };
@@ -174,11 +176,21 @@ PageRenderer.prototype = {
 		}
 		return list.join("");
 	},
+	content: function(element) {
+		if (element.content) return element.content;
+		if (element.children && element.children.length == 1 && this.text(element.children[0])) return this.content(element.children[0]);
+		return null;
+	},
+	text: function(element) {
+		return element.type == 'text';
+	},
 	process: function(element, indent) {
 		var lines = [];
-		if (element.content) {
+		if (this.text(element)) {
+			lines.push(this.content(element));
+		} else if (this.content(element)) {
 			lines.push(this.indented(indent) + this.start(element));
-			lines.push(element.content);
+			lines.push(this.content(element));
 			lines.push(this.end(element));
 		} else if (this.blank(element)) {
 			lines.push(this.indented(indent) + this.start(element));
@@ -204,6 +216,7 @@ PageRenderer.prototype = {
 };
 
 exports.render = function(page, minified) {
+	if (typeof page == "string") page = parser.parse(page);
 	return new PageRenderer(minified).render(page);
 };
 exports.Renderer = PageRenderer;
